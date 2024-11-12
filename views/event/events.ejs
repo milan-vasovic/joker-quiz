@@ -1,0 +1,15 @@
+<%- include('../includes/head.ejs') %>
+<%- include('../includes/navigation.ejs') %>
+    <section class="main__container">
+        <h2><%= pageTitle %></h2>
+        <div>
+            <% if (events.length > 0) { %>
+                <% events.forEach(event => { %>
+                    <p><%= JSON.stringify(event) %></p>
+                <% }) %>
+            <% } else { %>
+                <p>Trenutno nema Događaja!</p>
+            <% } %>
+        </div>
+    </section>
+<%- include('../includes/end.ejs') %>

@@ -1,0 +1,44 @@
+<section class="main__container">
+    <h2><%= event.name %></h2>
+    <p><%= totalPoints %></p>
+    <div>
+        <!-- Prvo idu pitanja tacnije description pa multipleChoice ako postoji -->
+        <div>
+            <% event.quests.forEach((question, index) => { %>
+                <div>
+                    <h2><%= index + 1 %>. <%= question.description %></h2>
+                    <p>Težina: <%= question.difficulty %></p>
+                    <% if (question.type !== "text") { %>
+                        <% question.multipleChoice.forEach(choice => { %>
+                            <ul>
+                                <% if (choice.text) { %>
+                                    <li><%= choice.text %></li>
+                                <% } else { %>
+                                    <li><img src="" alt="<%= choice.image %>"></li>
+                                <% } %>
+                            </ul>
+                        <% }) %>
+                    <% } else { %>
+                        <p>___________________________</p>
+                    <% } %>
+                </div>
+            <% }) %>
+        </div>
+        <hr>
+        <!-- Kada prodju sva pitanja na taj nacin onda klikom na dugme se prikazuje sledeci prikaz pitanja ali sa odgovorima i bodovima -->
+        <div>
+            <% event.quests.forEach((question, index) => { %>
+                <div>
+                    <h2><%= index + 1 %>. <%= question.description %></h2>
+                    <p>Težina: <%= question.difficulty %></p>
+                    <% question.acceptedAnswers.forEach(answer => { %>
+                        <ul>
+                            <li>Odgovor: <strong><%= answer.text %></strong> | Poeni: <strong><%= answer.points %></strong></li>
+                        </ul>
+                    <% }) %>
+                </div>
+            <% }) %>
+        </div>
+        <!-- Posle toga se prelazi na deo za unost bodova u timove, menja se status i prelazi na detalje dogadjaja gde se onda generisu leaderboard -->
+    </div>
+</section>

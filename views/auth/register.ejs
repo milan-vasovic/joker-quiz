@@ -1,0 +1,33 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/main.css">
+<%- include('../includes/navigation.ejs') %>
+    <section class="main__container">
+        <h1><%= pageTitle %></h1>
+        <div class="">
+            <form action="/registracija" class="" method="POST">
+                <div class="">
+                    <label for="name">Naziv Tima</label>
+                    <input type="text" name="name" id="name">
+                </div>
+                <div class="">
+                    <label for="email">Email</label>
+                    <input type="text" name="email" id="email">
+                </div>
+                <div class="">
+                    <label for="password">Šifra</label>
+                    <input type="password" name="password" id="password">
+                </div>
+                <div class="">
+                    <label for="confirmedPassword">Potvrdite Šifru</label>
+                    <input type="password" name="confirmedPassword" id="confirmedPassword">
+                </div>
+                <input type="hidden" name="CSRFToken" value="<%= csrfToken %>">
+                <button type="submit" class="">Registrujte Vaš Tim</button>
+                <a class="" href="">Već ste registrovani, prijavite se</a>
+            </form>
+            <% if (errorMessage) { %>
+                <p><%= errorMessage %></p>
+            <% } %>
+        </div>
+    </section>
+<%- include('../includes/end.ejs') %>

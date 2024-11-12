@@ -1,0 +1,71 @@
+<%- include('../includes/head.ejs') %>
+<%- include('../includes/navigation.ejs') %>
+    <section class="main__container">
+        <h2><%= event.name %></h2>
+        <div>
+            <div>
+                <div>
+                    <h3>Vodi: <%= event.presenter.username %></h3>
+                    <h4>Datum: <%= event.startDate.toLocaleDateString('sr-RS') %></h4>
+                    <p>Status: <strong><% if (event.status === "future") { %>predstojeći<% } else if (event.status === "past") { %>završen<% } else { %>trenutni<% } %></strong></p>
+                    <p>Kategorija: <strong><%= event.category.join(', ') %></strong></p>
+                </div>
+                <div>
+                    <p><%= event.description %></p>
+                    <% if (event.startDate >= Date.now() && event.status === 'future') { %>
+                        <form action="/admin/zapocnite-dogadjaj" method="post">
+                            <input type="hidden" name="eventId" value="<%= event._id %>">
+                            <input type="hidden" name="CSRFToken" value="<%= csrfToken %>">
+                            <button type="submit">Započnite Događaj</button>
+                        </form>
+                    <% } %>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <!-- Tabs -->
+                </div>
+                <div>
+                    <!-- Results -->
+                    <div>
+                        <h3>Nagrade</h3>
+                        <% if (event.rewards.lentgh > 0) { %>
+
+                        <% } else { %>
+                            <p>Nagrade će biti dodate kasnije!</p>
+                        <% } %>
+                    </div>
+                    <div>
+                        <h3>Timovi</h3>
+                        <% if (event.rewards.lentgh > 0) { %>
+
+                        <% } else { %>
+                            <p>Timovi će biti dodati kasnije!</p>
+                        <% } %>
+                    </div>
+                    <% if (event.status === "finished") { %>
+                        <div>
+                            <h3>Rang Lista</h3>
+                            <% if (event.leaderboard.lentgh > 0) { %>
+
+                            <% } else { %>
+                                <form action="" method="post">
+                                    <button type="">Rangirajte</button>
+                                </form>
+                            <% } %>
+                        </div>
+                        <div>
+                            <h3>Pitanja</h3>
+                            <% if (event.quests.lentgh > 0) { %>
+                                <%- include("../question/quest-table"), {quests: event.quests} %>
+                                <p>radi</p>
+                            <% } else { %>
+                                <p>Pitanja će biti dodata kasnije!</p>
+                            <% } %>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </section>
+<%- include('../includes/end.ejs') %>

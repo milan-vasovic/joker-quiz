@@ -1,0 +1,25 @@
+<%- include('../includes/head.ejs') %>
+<%- include('../includes/navigation.ejs') %>
+<section class="main__container">
+    <h1><%= pageTitle %></h1>
+    <div>
+        <% if (events.length > 0) { %>
+            <% events.forEach(event => { %>
+                <p><%= event %></p>
+            <% }) %>
+        <% } else { %>
+            <p>There are no events yet!</p>
+        <% } %>
+    </div>
+    
+    <div>
+        <% if (leagues.length > 0) { %>
+            <% leagues.forEach(league => { %>
+                <p><%= league %></p>
+            <% }) %>
+        <% } else { %>
+            <p>There are no leagues yet!</p>
+        <% } %>
+    </div>
+</section>
+<%- include('../includes/end.ejs') %>

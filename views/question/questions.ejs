@@ -1,0 +1,10 @@
+<%- include('../includes/head.ejs') %>
+<%- include('../includes/navigation.ejs') %>
+    <section class="main__container">
+        <% if (quests.length > 0) { %>
+               <%- include("./quest-table"), {quests: quests} %>
+        <% } else { %>
+            <p>Trenutno nema Pitanja!</p>
+        <% } %>
+    </section>
+<%- include('../includes/end.ejs') %>

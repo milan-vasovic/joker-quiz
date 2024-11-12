@@ -1,0 +1,36 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/main.css">
+<%- include('../includes/navigation.ejs') %>
+    <section class="main__container">
+        <h2>Dodajte Događaj</h2>
+        <div>
+            <form action="/admin/dodajte-dogadjaj" method="post">
+                <div>
+                    <label for="name">Naziv</label>
+                    <input type="text" name="name" id="name" required>
+                </div>
+                <div>
+                    <label for="category">Kategorija</label>
+                    <select name="category" id="category" required>
+                        <option value="fudbal">Fudbal</option>
+                        <option value="kosarka">Košarka</option>
+                        <option value="tenis">Tenis</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="description">Opis</label>
+                    <textarea name="description" id="description" required></textarea>
+                </div>
+                <div>
+                    <label for="startDate">Datum Početka</label>
+                    <input type="date" name="startDate" id="startDate" required>
+                </div>
+                <div>
+                    <input type="hidden" name="CSRFToken" value="<%= csrfToken %>">
+                    <a href="/">Odustanite</a>
+                    <button type="submit">Napravite</button>
+                </div>
+            </form>
+        </div>
+    </section>
+<%- include('../includes/end.ejs') %>

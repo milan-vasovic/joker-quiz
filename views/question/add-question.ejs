@@ -1,0 +1,123 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/main.css">
+<%- include('../includes/navigation.ejs') %>
+<section class="main__container">
+    <h2>Dodaj Novo Pitanje</h2>
+    <div>
+        <form id="questionForm" action="/admin/dodajte-pitanje" method="POST">
+            <!-- Korak 1 -->
+            <div class="form-step" id="step-1">
+                <!-- Type, Date, Difficulty -->
+                <div>
+                    <label for="type">Tip</label>
+                    <select name="type" id="type" required>
+                        <option value="text">Tekstualno</option>
+                        <option value="image">Slika</option>
+                        <option value="multipleChoice">Višestruki izbor</option>
+                        <option value="matching">Uparivanje</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="category">Kategorija</label>
+                    <select name="category" id="category" required>
+                        <option value="fudbal">Fudbal</option>
+                        <option value="kosarka">Košarka</option>
+                        <option value="tenis">Tenis</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="difficulty">Težina</label>
+                    <select name="difficulty" id="difficulty" required>
+                        <option value="1">1 - Lako</option>
+                        <option value="2">2 - Srednje</option>
+                        <option value="3">3 - Teško</option>
+                        <option value="4">4 - Veoma Teško</option>
+                        <option value="5">5 - Ekstremno</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="date">Datum</label>
+                    <input type="date" name="date" id="date">
+                </div>
+                <div>
+                    <button type="button" onclick="nextStep()">Dalje</button>
+                </div>
+            </div>
+
+            <!-- Korak 2 -->
+            <div class="form-step" id="step-2" style="display: none;">
+                <!-- Description -->
+                <div>
+                    <label for="description">Opis</label>
+                    <textarea name="description" id="description" required></textarea>
+                </div>
+                <div>
+                    <button type="button" onclick="prevStep()">Nazad</button>
+                    <button type="button" onclick="nextStep()">Dalje</button>
+                </div>
+            </div>
+
+            <!-- Korak 3 -->
+            <div class="form-step" id="step-3" style="display: none;">
+                <!-- Accepted Answers -->
+                <div id="acceptedAnswersContainer">
+                    <div class="accepted-answer">
+                        <label for="answerText0">Tačan Odgovor</label>
+                        <textarea name="acceptedAnswers[text]" id="answerText0" required></textarea>
+
+                        <label for="points0">Bodovi</label>
+                        <input type="number" name="acceptedAnswers[points]" id="points0" required>
+
+                        <label for="answerImage0">Slika</label>
+                        <input type="text" name="acceptedAnswers[image]" id="answerImage0">
+                        <img id="answerImagePreview0" src="" alt="" style="display: none;">
+
+                        <!-- Dugme za brisanje odgovora (ne prikazujemo za prvi odgovor) -->
+                        <!-- Dugme će biti prikazano samo za dodatne odgovore -->
+                    </div>
+                </div>
+                <!-- Dugme za dodavanje novog odgovora -->
+                <button type="button" id="addAcceptedAnswerButton" onclick="addAcceptedAnswer()" style="display: none;">Dodaj Tačan Odgovor</button>
+
+                <div>
+                    <button type="button" onclick="prevStep()">Nazad</button>
+                    <button type="button" onclick="nextStep()">Dalje</button>
+                </div>
+            </div>
+
+            <!-- Korak 4 -->
+            <div class="form-step" id="step-4" style="display: none;">
+                <!-- Multiple Answers -->
+                <div id="multipleAnswersContainer">
+                    <div class="multiple-answer">
+                        <label for="multiAnswerText0">Mogući Odgovor</label>
+                        <textarea name="multipleAnswers[text]" id="multiAnswerText0"></textarea>
+
+                        <label for="multiAnswerImage0">Slika</label>
+                        <input type="text" name="multipleAnswers[image]" id="multiAnswerImage0">
+                        <img id="multiAnswerImagePreview0" src="" alt="" style="display: none;">
+
+                        <!-- Dugme za brisanje odgovora (ne prikazujemo za prvi odgovor) -->
+                        <!-- Dugme će biti prikazano samo za dodatne odgovore -->
+                    </div>
+                </div>
+                <!-- Dugme za dodavanje novog odgovora -->
+                <button type="button" id="addMultipleAnswerButton" onclick="addMultipleAnswer()" style="display: none;">Dodaj Mogući Odgovor</button>
+
+                <div>
+                    <button type="button" onclick="prevStep()">Nazad</button>
+                    <input type="hidden" name="CSRFToken" value="<%= csrfToken %>">
+                    <button type="submit">Napravi</button>
+                </div>
+            </div>
+        </form>
+        <a href="/">Odustanite</a>
+    </div>
+</section>
+
+
+<script src="/js/question-form.js">
+
+</script>
+
+<%- include('../includes/end.ejs') %>

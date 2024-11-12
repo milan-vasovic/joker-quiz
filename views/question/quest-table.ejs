@@ -1,0 +1,26 @@
+<table>
+    <caption>Pitanja</caption>
+    <thead>
+        <tr>
+            <th>Br.</th>
+            <th>Opis</th>
+            <th>Kategorije</th>
+            <th>Težina</th>
+            <th>Tip</th>
+            <th>Akcije</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% quests.forEach((quest, index) => { %>
+            <tr>
+                <td><%= index + 1 %>.</td>
+                <td><%= quest.description %></td>
+                <td><%= quest.category.join(', ') %></td>
+                <td><%= quest.difficulty %></td>
+                <td><%= quest.type %></td>
+                <td><a href="/admin/pitanje-detalji/<%= quest._id %>">Vidi</a></td>
+            </tr>
+        <% }) %>
+    </tbody>
+    <tfoot></tfoot>
+</table>
