@@ -1,5 +1,6 @@
 const EventModel = require("../models/event");
 const QuestModel = require("../models/quest");
+const TeamModel = require("../models/team");
 const errorHelper = require("../helpers/error-helper");
 
 exports.getEvents = async () => {
@@ -9,7 +10,7 @@ exports.getEvents = async () => {
 };
 
 exports.getEventById = async (id) => {
-    const event = await EventModel.findById(id);
+    const event = await EventModel.findById(id).populate("teams.teamId leaderboard.teamId", "_id name").populate("quests", "description category difficulty type acceptedAnswers");
     if (!event) {
         errorHelper.throwNotFoundError("događaja");
     }
@@ -17,11 +18,21 @@ exports.getEventById = async (id) => {
 };
 
 exports.getQuestsFromEventById = async (id) => {
-    const event = await EventModel.findById(id).populate("quests");
+    const event = await EventModel.findById(id).populate("quests teams.teamId");
     if (!event) {
         errorHelper.throwNotFoundError("događaja");
     }
     return event;
+};
+
+exports.getNewTeamsForEvent = async (id) => {
+    const event = await EventModel.findById(id).select("teams").populate("teams.teamId", "name");
+    const excludedTeamIds = event.teams.map(team => team.teamId);
+    const teams = await TeamModel.find({
+        _id: { $nin: excludedTeamIds }
+      }).select("name");
+
+    return teams;
 };
 
 exports.postNewEvent = async (body, user) => {
@@ -60,10 +71,8 @@ exports.postDeleteEvent = async (id) => {
 };
 
 exports.postStartEvent = async (id) => {
-    const event = await EventModel.findById(id);
+    const event = await EventModel.findById(id).populate("teams.teamId", "_id name");
 
-    console.log(event + "\nRadi!");
-    console.log(event);
     const quests = [];
     const easyQuests = await getRandomQuestions(event.category[0], 1, 9);
     const mediumQuests = await getRandomQuestions(event.category[0], 2, 5);
@@ -109,4 +118,41 @@ async function getRandomQuestions(categoryValue, difficultyValue, size) {
     } catch (error) {
       errorHelper.throwNotFoundError("pitanja");
     }
-  }
+}
+
+exports.postTeamsScores = async (body) => {
+    const teams = body.teams;
+    const points = body.points;
+
+    const event = await EventModel.findById(body.eventId).select("leaderboard");
+
+    const mappedData = teams.map((team, index) => ({
+        teamId: team,
+        points: points[index] ? parseInt(points[index], 10) : 0
+      }));
+
+    mappedData.sort((a, b) => b.points - a.points);
+
+    event.leaderboard = mappedData.map((data, index) => ({
+        teamId: data.teamId,
+        place: index + 1,
+        points: data.points,
+        isWinner: index < 3
+      }));
+
+    event.status = "finished";
+
+    return await event.save();   
+}
+
+exports.postAddTeamToEvent = async (body) => {
+    const eventId = body.eventId;
+
+    const event = await EventModel.findById(eventId).select("teams");
+
+    event.teams.push({
+        teamId: body.teamId
+    });
+
+    return await event.save();
+}

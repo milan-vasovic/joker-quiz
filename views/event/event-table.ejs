@@ -1,0 +1,28 @@
+<table>
+    <caption>Događaji</caption>
+    <thead>
+        <tr>
+            <th>Br.</th>
+            <th>Naziv</th>
+            <th>Kategorije</th>
+            <th>Predavač</th>
+            <th>Status</th>
+            <th>Datum</th>
+            <th>Akcije</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% events.forEach((event, index) => { %>
+            <tr>
+                <td><%= index + 1 %>.</td>
+                <td><%= event.name %></td>
+                <td><%= event.category.join(', ') %></td>
+                <td><%= event.presenter.username %></td>
+                <td><%= event.status %></td>
+                <td><%= event.startDate.toLocaleDateString('sr-RS') %></td>
+                <td><a class="btn" href="/admin/dogadjaj-detalji/<%= event._id %>">Vidi</a></td>
+            </tr>
+        <% }) %>
+    </tbody>
+    <tfoot></tfoot>
+</table>

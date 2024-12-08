@@ -1,6 +1,27 @@
 <%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/table.css">
 <%- include('../includes/navigation.ejs') %>
     <section class="main__container">
-        
+        <div class="main__content padding-large">
+            <%- include("../team/team-table",
+            {
+                teams: teams,
+                totalPoints: undefined,
+                isLeaderboard: undefined,
+                hasActions: true,
+                actions: [
+                    {
+                        type: 'link',
+                        link: "/admin/tim-detalji/",
+                        linkName: 'Vidite'
+                    },
+                    {
+                        type: 'form',
+                        formAction: "/admin/izbrisite-tim/",
+                        buttonName: 'Izbrišite'
+                    }
+                ]
+            }) %>
+        </div> 
     </section>
 <%- include('../includes/end.ejs') %>

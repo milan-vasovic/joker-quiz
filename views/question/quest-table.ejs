@@ -18,9 +18,14 @@
                 <td><%= quest.category.join(', ') %></td>
                 <td><%= quest.difficulty %></td>
                 <td><%= quest.type %></td>
-                <td><a href="/admin/pitanje-detalji/<%= quest._id %>">Vidi</a></td>
+                <td><a class="btn" href="/admin/pitanje-detalji/<%= quest._id %>">Vidi</a></td>
             </tr>
         <% }) %>
     </tbody>
-    <tfoot></tfoot>
+    <tfoot>
+        <tr>
+            <td>Ukupno</td>
+            <td colspan="5"><%= quests.length %></td>
+          </tr>
+    </tfoot>
 </table>

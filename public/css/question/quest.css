@@ -1,0 +1,38 @@
+.multiple-choice-container {
+    display: flex;
+    justify-content: space-between;
+    justify-content: center;
+}
+
+.multiple-choice {
+    display: flex;
+    flex-direction: row;
+    list-style: lower-alpha;
+    gap: 5rem;
+}
+
+.multiple-answers {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    text-align: left;
+}
+
+.multiple-choice-left, .multiple-choice-right {
+    margin: 1rem;
+    padding: 1rem;
+    text-align: left;
+}
+
+.quest__container {
+    height: 35rem;
+}
+
+.image__container {
+    width: 25rem;
+    height: 25rem;
+}
+
+.main__content {
+    height: 41rem;
+}

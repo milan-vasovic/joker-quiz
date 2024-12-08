@@ -155,18 +155,18 @@ function addAcceptedAnswer() {
   answerDiv.classList.add("accepted-answer");
 
   answerDiv.innerHTML = `
-            <label for="answerText${acceptedAnswerIndex}">Tačan Odgovor</label>
-            <textarea name="acceptedAnswers[text]" id="answerText${acceptedAnswerIndex}" required></textarea>
+            <label class="main-form__label" for="answerText${acceptedAnswerIndex}">Tačan Odgovor</label>
+            <textarea class="main-form__textarea" name="acceptedAnswers[text]" id="answerText${acceptedAnswerIndex}" required></textarea>
 
-            <label for="points${acceptedAnswerIndex}">Bodovi</label>
-            <input type="number" name="acceptedAnswers[points]" id="points${acceptedAnswerIndex}" required>
+            <label class="main-form__label" for="points${acceptedAnswerIndex}">Bodovi</label>
+            <input class="main-form__input" type="number" name="acceptedAnswers[points]" id="points${acceptedAnswerIndex}" required>
 
-            <label for="answerImage${acceptedAnswerIndex}">Slika</label>
-            <input type="text" name="acceptedAnswers[image]" id="answerImage${acceptedAnswerIndex}">
+            <label class="main-form__label" for="answerImage${acceptedAnswerIndex}">Slika</label>
+            <input class="main-form__input" type="text" name="acceptedAnswers[image]" id="answerImage${acceptedAnswerIndex}">
             <img id="answerImagePreview${acceptedAnswerIndex}" src="" alt="" style="display: none;">
 
             <!-- Dugme za brisanje odgovora -->
-            <button type="button" class="remove-accepted-answer-button" onclick="removeAcceptedAnswer(${acceptedAnswerIndex})">Obriši odgovor</button>
+            <button type="button" class="remove-accepted-answer-button btn" onclick="removeAcceptedAnswer(${acceptedAnswerIndex})">Obriši odgovor</button>
         `;
 
   acceptedAnswersContainer.appendChild(answerDiv);

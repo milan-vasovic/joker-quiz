@@ -1,0 +1,31 @@
+<table>
+    <caption>Lige</caption>
+    <thead>
+        <tr>
+            <th>Br.</th>
+            <th>Naziv</th>
+            <th>Status</th>
+            <th>Datum Početka</th>
+            <th>Datum Završetka</th>
+            <th>Akcije</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% leagues.forEach((league, index) => { %>
+            <tr>
+                <td><%= index + 1 %>.</td>
+                <td><%= league.name %></td>
+                <td><%= league.status %></td>
+                <td><%= league.startDate.toLocaleDateString('sr-RS') %></td>
+                <td><%= league.endDate.toLocaleDateString('sr-RS') %></td>
+                <td><a class="btn" href="/admin/liga-detalji/<%= league._id %>">Vidi</a></td>
+            </tr>
+        <% }) %>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>Ukupno</td>
+            <td colspan="5"><%= leagues.length %></td>
+          </tr>
+    </tfoot>
+</table>

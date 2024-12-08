@@ -20,14 +20,38 @@ exports.getEventsPage = async (req, res, next) => {
 
 exports.getEventDetailsPage = async (req, res, next) => {
     try {
+        let activeRewards, activeTeams, activeLeaderboards, activeQuests;
+        
+        activeRewards = req.query.rewards ? "active" : undefined;
+        activeTeams = req.query.teams ? req.query.teams : undefined;
+        activeLeaderboards = req.query.leaderboard ? req.query.leaderboard : undefined;
+        activeQuests = req.query.quests ? req.query.quests : undefined;
+
         const eventId = req.params.eventId;
 
         const event = await eventHelper.getEventById(eventId);
 
+        const teams = await eventHelper.getNewTeamsForEvent(eventId);
+
+        let totalPoints = 0;
+
+        event.quests.forEach(quest => {
+            quest.acceptedAnswers.forEach(answer => {
+                totalPoints += answer.points;
+            })
+        });
+
+        console.log(JSON.stringify(event.teams));
         res.render("event/event-details", {
             pageTitle: "Događaj Detalji",
             path: '/dogadjaj-detalji',
-            event: event
+            event: event,
+            teams: teams,
+            totalPoints: totalPoints,
+            activeRewards,
+            activeTeams,
+            activeLeaderboards,
+            activeQuests
         });
     } catch (err) {
         errorHelper.throwServerError(err);
@@ -140,3 +164,31 @@ exports.postStartEvent = async (req, res, next) => {
         errorHelper.throwServerError(err);
     }
 };
+
+exports.postEventTeamsScores = async (req, res, next) => {
+    try {
+        const body = req.body;
+
+        const isSuccess = await eventHelper.postTeamsScores(body);
+
+        if (isSuccess) {
+            res.redirect(`/admin/dogadjaj-detalji/${body.eventId}?leaderboard=active`)
+        }
+    } catch (err) {
+        errorHelper.throwServerError(err);
+    }
+};
+
+exports.postAddTeamToEvent = async (req, res, next) => {
+    try {
+        const body = req.body;
+
+        const isSuccess = await eventHelper.postAddTeamToEvent(body);
+
+        if (isSuccess) {
+            res.redirect(`/admin/dogadjaj-detalji/${body.eventId}?teams=active`)
+        }
+    } catch (err) {
+        errorHelper.throwServerError(err);
+    }
+}

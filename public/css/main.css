@@ -1,5 +1,5 @@
 :root {
-    --primary-one: #ce1818;  /* Zelena */
+    --primary-one: #ce1818;
     --danger-color: #ad1b1b;
     --white: #ffffff;
     --font-color-dark: #333;
@@ -221,6 +221,80 @@ body {
 
 .devider {
     display: inline;
+}
+
+.font__extra-small {
+    font-size: var(font-size-extra-small);
+}
+
+.font__small {
+    font-size: var(--font-size-small);
+}
+
+.font__medium {
+    font-size: var(--font-size-base);
+}
+.font__large {
+    font-size: var(--font-size-large);
+}
+.font__extra-larage {
+    font-size: var(--font-size-extra-large);
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.25rem 1rem;
+    text-decoration: none;
+    font: inherit;
+    border: 1px solid var(--primary-one);
+    color: var(--primary-one);
+    background: white;
+    border-radius: 3px;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.btn:hover,
+.btn:active {
+    background-color: var(--primary-one);
+    color: white;
+}
+
+.btn-danger {
+    border: 1px solid #ad1b1b;
+    background-color: white;
+    color: #ad1b1b;
+}
+
+.btn-danger:hover,
+.btn-danger:active {
+    background-color: #ad1b1b;
+    color: white;
+}
+
+.btn-success {
+    width: 100%;
+    display: inline-block;
+    padding: 0.25rem 1rem;
+    text-decoration: none;
+    font: inherit;
+    border: 1px solid var(--primary-one);
+    color: white;
+    background: var(--primary-one);
+    border-radius: 3px;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.btn-success:hover,
+.btn-success:active {
+    color: var(--primary-one);
+    background: white;
+}
+
+button[disabled] {
+    opacity: 0.75;
+    cursor: not-allowed;
 }
 
 /* Responsivni prikaz za veće ekrane */

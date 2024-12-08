@@ -1,0 +1,45 @@
+<table>
+    <caption>Rezultati</caption>
+    <thead>
+        <tr>
+            <th>Br.</th>
+            <th>Korisničko Ime</th>
+            <th>Uloga</th>
+            <% if (hasActions) { %>
+                <th>Akcije</th>
+            <% } %>
+        </tr>
+    </thead>
+    <tbody>
+        <% users.forEach((user, index) => { %>
+            <tr>
+                <td><%= index + 1 %>.</td>
+                <td><%= user.username %></td>
+                <td><%= user.role %></td>
+                <% if (hasActions) { %>
+                    <td>
+                        <div class="flex-row">
+                            <% actions.forEach(action => { %>
+                                <% if (action.type === 'form') { %>
+                                    <form action="<%= action.formAction %>" method="POST">
+                                        <input type="hidden" name="userId" value="<%= user._id %>">
+                                        <input type="hidden" name="CSRFToken" value="<%= csrfToken %>">
+                                        <button class="btn" type="submit"><%= action.buttonName %></button>
+                                    </form>
+                                <% } else { %>
+                                    <a class="btn" href="<%= action.link %><%= user._id %>"><%= action.linkName %></a>
+                                <% } %>
+                            <% }) %>
+                        </div>
+                    </td>
+                <% } %>
+            </tr>
+        <% }) %>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>Ukupno</td>
+            <td colspan="3"><%= users.length %></td>
+          </tr>
+    </tfoot>
+</table>

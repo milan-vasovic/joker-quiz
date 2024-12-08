@@ -1,44 +1,165 @@
-<section class="main__container">
-    <h2><%= event.name %></h2>
-    <p><%= totalPoints %></p>
-    <div>
-        <!-- Prvo idu pitanja tacnije description pa multipleChoice ako postoji -->
-        <div>
-            <% event.quests.forEach((question, index) => { %>
-                <div>
-                    <h2><%= index + 1 %>. <%= question.description %></h2>
-                    <p>Težina: <%= question.difficulty %></p>
-                    <% if (question.type !== "text") { %>
-                        <% question.multipleChoice.forEach(choice => { %>
-                            <ul>
-                                <% if (choice.text) { %>
-                                    <li><%= choice.text %></li>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= pageTitle %></title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/include/header.css">
+    <link rel="stylesheet" href="/css/include/footer.css">
+    <link rel="stylesheet" href="/css/question/quest.css">
+</head>
+<body>
+    <header class="main-header">
+    </header>
+    <section class="main__container padding-large gap-large">
+        <h2><%= event.name %></h2>
+        
+        <div class="main__content align-center justify-center padding-large gap-large" id="question-container">
+            <% if (event.quests && event.quests.length) { %>
+                <% event.quests.forEach((question, index) => { %>
+                    <div class="quest__container flex-column justify-space-between align-center gap-large" id="question-<%= index %>" style="<%= index === 0 ? '' : 'display: none;' %>">
+                        <h3 class="main__title font__extra-larage"><%= index + 1 %>. <%= question.description %></h3>
+                        <% if (question.type !== "text") { %>
+                            <div class="multiple-choice-container">
+                                <% if (question.multipleChoice.length > 1) { %>
+                                    <% 
+                                        const leftChoices = question.multipleChoice.slice(0, Math.ceil(question.multipleChoice.length / 2));
+                                        const rightChoices = question.multipleChoice.slice(Math.ceil(question.multipleChoice.length / 2));
+                                    %>
+    
+                                    <ul class="multiple-choice">
+                                        <div class="multiple-choice-left">
+                                            <% leftChoices.forEach(choice => { %>
+                                                <% if (choice.text) { %>
+                                                    <li class="font__extra-larage"><%= choice.text %></li>
+                                                <% } else { %>
+                                                    <li class="font__extra-larage"><img class="image__container" src="<%= choice.image %>" alt="Choice Image"></li>
+                                                <% } %>
+                                            <% }) %>
+                                        </div>
+                                    
+                                        <div class="multiple-choice-right">
+                                            <% rightChoices.forEach(choice => { %>
+                                                <% if (choice.text) { %>
+                                                    <li class="font__extra-larage"><%= choice.text %></li>
+                                                <% } else { %>
+                                                    <li><img class="image__container" src="<%= choice.image %>" alt="Choice Image"></li>
+                                                <% } %>
+                                            <% }) %>
+                                        </div>
+                                    </ul>
+                                    
                                 <% } else { %>
-                                    <li><img src="" alt="<%= choice.image %>"></li>
+                                    <ul class="multiple-choice" style="list-style: none;">
+                                        <% question.multipleChoice.forEach(choice => { %>
+                                            <% if (choice.text) { %>
+                                                <li class="font__extra-larage"><%= choice.text %></li>
+                                            <% } else { %>
+                                                <li><img class="image__container" src="<%= choice.image %>" alt="Choice Image"></li>
+                                            <% } %>
+                                        <% }) %>
+                                    </ul>
                                 <% } %>
-                            </ul>
-                        <% }) %>
-                    <% } else { %>
-                        <p>___________________________</p>
-                    <% } %>
-                </div>
-            <% }) %>
+                            </div>
+                        <% } else { %>
+                            <div>
+                                <br>
+                                <p>_______________________________________________</p>
+                            </div>     
+                        <% } %>
+                        <div>
+                            <% if (index === event.quests.length - 1) { %>
+                                <button class="btn" onclick="showAnswers()">Prikaži odgovore</button>
+                            <% } else { %>
+                                <button class="btn" onclick="nextQuestion(<%= index %>)">Sledeće</button>
+                            <% } %>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p>Nema dostupnih pitanja.</p>
+            <% } %>
         </div>
-        <hr>
-        <!-- Kada prodju sva pitanja na taj nacin onda klikom na dugme se prikazuje sledeci prikaz pitanja ali sa odgovorima i bodovima -->
-        <div>
+    
+        <div class="main__content align-center justify-center padding-large gap-large" id="results-container" style="display: none;">
             <% event.quests.forEach((question, index) => { %>
-                <div>
-                    <h2><%= index + 1 %>. <%= question.description %></h2>
-                    <p>Težina: <%= question.difficulty %></p>
-                    <% question.acceptedAnswers.forEach(answer => { %>
-                        <ul>
-                            <li>Odgovor: <strong><%= answer.text %></strong> | Poeni: <strong><%= answer.points %></strong></li>
+                <div class="answer quest__container flex-column justify-space-between align-center gap-large" id="answer-<%= index %>" style="<%= index === 0 ? '' : 'display: none;' %>">
+                    <h3 class="main__title font__extra-larage"><%= index + 1 %>. <%= question.description %></h3>
+                    <div class="multiple-choice-container">
+                        <ul class="multiple-answers"">
+                            <% question.acceptedAnswers.forEach(answer => { %>
+                                <li class="font__extra-larage">Odgovor: <strong><%= answer.text %></strong> | Poeni: <strong><%= answer.points %></strong></li>
+                            <% }) %>
                         </ul>
-                    <% }) %>
+                    </div>
+                    <div>
+                        <% if (index === event.quests.length - 1) { %>
+                            <button class="btn" onclick="showTeams()">Upis Rezultata</button>
+                        <% } else { %>
+                            <button class="btn" onclick="nextAnswer(<%= index %>)">Sledeće</button>
+                        <% } %>
+                    </div>
                 </div>
             <% }) %>
         </div>
-        <!-- Posle toga se prelazi na deo za unost bodova u timove, menja se status i prelazi na detalje dogadjaja gde se onda generisu leaderboard -->
-    </div>
-</section>
+        
+        <div class="main__content align-center justify-center padding-large gap-large" id="teams-container" style="display: none;">
+            <div class="main-form__container">
+                <h3><%= totalPoints %></h3>
+                <form class="main-form" action="/admin/dogadjaj-rezultati" method="post">
+                    <% event.teams.forEach((team, index) => { %>
+                        <div class="main-form__group">
+                            <label class="main-form__label" for="points<%= index %>"><%= team.teamId.name %></label>
+                            <input type="hidden" name="teams" value="<%= team.teamId._id %>" readonly>
+                            <input class="main-form__input" name="points" id="points<%= index %>" type="number" min="0">
+                        </div>
+                    <% }) %>
+                    <input type="hidden" name="eventId" value="<%= event._id %>">
+                    <input type="hidden" name="CSRFToken" value="<%= csrfToken %>">
+                    <button class="btn" type="submit">Unesite</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer"></footer>
+</body>
+<script>
+    const totalQuestions = <%= event.quests ? event.quests.length : 0 %>;
+    let currentQuestionIndex = 0;
+
+    function nextQuestion(index) {
+        document.getElementById(`question-${index}`).style.display = 'none';
+        currentQuestionIndex++;
+
+        if (currentQuestionIndex < totalQuestions) {
+            document.getElementById(`question-${currentQuestionIndex}`).style.display = 'flex';
+        }
+    }
+
+    function showAnswers() {
+        document.getElementById('question-container').style.display = 'none';
+        document.getElementById('results-container').style.display = 'flex';
+        currentQuestionIndex = 0; // Resetuje indeks za prikaz odgovora od početka
+    }
+
+    function showTeams() {
+        document.getElementById('results-container').style.display = 'none';
+        document.getElementById('teams-container').style.display = 'flex';
+    }
+
+    function showLeaderboard() {
+        document.getElementById('teams-container').style.display = 'none';
+        document.getElementById('leaderboard-container').style.display = 'flex';
+    }
+
+    function nextAnswer(index) {
+        document.getElementById(`answer-${index}`).style.display = 'none';
+        currentQuestionIndex++;
+
+        if (currentQuestionIndex < totalQuestions) {
+            document.getElementById(`answer-${currentQuestionIndex}`).style.display = 'flex';
+        }
+    }
+</script>

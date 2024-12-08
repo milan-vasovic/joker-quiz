@@ -3,7 +3,7 @@
 <body>
     <div class="backdrop"></div>
     <header class="main-header">
-        <button id="side-menu-toggle">Meni</button>
+        <button class="btn" id="side-menu-toggle">Meni</button>
         <nav class="main-header__nav">
             <ul class="main-header__item-list">
                 <li class="main-header__item">
@@ -47,7 +47,7 @@
             <ul class="main-header__item-list">
                 <% if (!isAuthenticated) { %>
                     <li class="main-header__item">
-                        <a class="<%= path === '/prijava' ? 'active' : '' %>" href="/prijava?redirectTo=/novosti">Prijava</a>
+                        <a class="<%= path === '/prijava' ? 'active' : '' %>" href="/prijava">Prijava</a>
                     </li>
                     <li class="main-header__item">
                         <a class="<%= path === '/registracija' ? 'active' : '' %>" href="/registracija">Registracija</a>
@@ -115,7 +115,7 @@
                 <hr>
                 <% if (!isAuthenticated) { %>
                     <li class="mobile-nav__item">
-                        <a class="<%= path === '/prijava' ? 'active' : '' %>" href="/prijava?redirectTo=/novosti">Prijava</a>
+                        <a class="<%= path === '/prijava' ? 'active' : '' %>" href="/prijava">Prijava</a>
                     </li>
                     <li class="mobile-nav__item">
                         <a class="<%= path === '/registracija' ? 'active' : '' %>" href="/registracija">Registracija</a>

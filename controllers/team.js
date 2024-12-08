@@ -8,6 +8,8 @@ exports.getTeamsPage = async (req, res, next) => {
     try {
         const teams = await teamHelper.getTeams();
 
+        console.log(teams);
+        
         res.render("team/teams", {
             path: "/timovi",
             pageTitle: "Timovi",

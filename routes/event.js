@@ -40,8 +40,16 @@ router.post("/admin/dodajte-dogadjaj",
 //     [],
 //     isAuth, isAdmin, eventController.postAddEventToLeague);
 
+router.post("/admin/dodajte-tim-u-dogadjaj",
+    [],
+    isAuth, isAdmin, eventController.postAddTeamToEvent);
+
 router.post("/admin/zapocnite-dogadjaj",
     [],
     isAuth ,isAdmin, eventController.postStartEvent);
+
+router.post("/admin/dogadjaj-rezultati",
+    [],
+    isAuth ,isAdmin, eventController.postEventTeamsScores);
 
 module.exports = router;

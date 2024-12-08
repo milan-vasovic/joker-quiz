@@ -1,11 +1,12 @@
 <%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/table.css">
 <%- include('../includes/navigation.ejs') %>
     <section class="main__container">
         <h2><%= pageTitle %></h2>
         <div>
             <% if (events.length > 0) { %>
                 <% events.forEach(event => { %>
-                    <p><%= JSON.stringify(event) %></p>
+                    <%- include("./event-table"), {events: events} %>
                 <% }) %>
             <% } else { %>
                 <p>Trenutno nema Događaja!</p>

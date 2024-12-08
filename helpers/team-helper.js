@@ -3,7 +3,8 @@ const errorHelper = require("../helpers/error-helper");
 const eventHelper = require("../helpers/event-helper");
 
 exports.getTeams = async () => {
-    const teams = await TeamModel.find();
+    const teams = await TeamModel.find().select("name");
+    console.log(teams);
     return teams.length > 0 ? teams : [];
 };
 

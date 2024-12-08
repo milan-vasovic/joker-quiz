@@ -1,13 +1,16 @@
 <%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/table.css">
+<link rel="stylesheet" href="/css/tabs.css">
+<link rel="stylesheet" href="/css/form.css">
 <%- include('../includes/navigation.ejs') %>
     <section class="main__container">
         <h2><%= event.name %></h2>
-        <div>
+        <div class="main__content padding-medium">
             <div>
                 <div>
                     <h3>Vodi: <%= event.presenter.username %></h3>
                     <h4>Datum: <%= event.startDate.toLocaleDateString('sr-RS') %></h4>
-                    <p>Status: <strong><% if (event.status === "future") { %>predstojeći<% } else if (event.status === "past") { %>završen<% } else { %>trenutni<% } %></strong></p>
+                    <p>Status: <strong><% if (event.status === "future") { %>predstojeći<% } else if (event.status === "finished") { %>završen<% } else { %>trenutni<% } %></strong></p>
                     <p>Kategorija: <strong><%= event.category.join(', ') %></strong></p>
                 </div>
                 <div>
@@ -16,49 +19,94 @@
                         <form action="/admin/zapocnite-dogadjaj" method="post">
                             <input type="hidden" name="eventId" value="<%= event._id %>">
                             <input type="hidden" name="CSRFToken" value="<%= csrfToken %>">
-                            <button type="submit">Započnite Događaj</button>
+                            <button class="btn" type="submit">Započnite Događaj</button>
                         </form>
+                    <% } else if (event.status === 'current') { %>
+                        <a class="btn" href="/admin/zapocnite-dogadjaj/<%= event._id %>">Nastavite</a>
                     <% } %>
                 </div>
             </div>
             <div>
                 <div>
-                    <!-- Tabs -->
+                    <div class="tab__container">
+                        <div class="tabs">
+                            <button type="button" class="tab <%= activeRewards %> btn" onclick="openTab('rewards__container')"
+                                data-tab="rewards__container">Nagrade</button>
+                            <button type="button" class="tab <%= activeTeams %> btn" onclick="openTab('teams__container')"
+                                data-tab="teams__container">Timovi</button>
+                            <% if (event.status === "finished") { %>
+                                <button type="button" class="tab <%= activeLeaderboards %> btn" onclick="openTab('leaderboards__container')"
+                                    data-tab="leaderboards__container">Rang Lista</button>
+                                <button type="button" class="tab <%= activeQuests %> btn" onclick="openTab('quests__container')"
+                                    data-tab="quests__container">Pitanja</button>
+                            <% } %>
+                        </div>
+                    </div>
                 </div>
                 <div>
-                    <!-- Results -->
-                    <div>
+                    <div id="rewards__container" class="rewards__container tab-content <%= activeRewards %>" data-tab="rewards__container">
                         <h3>Nagrade</h3>
-                        <% if (event.rewards.lentgh > 0) { %>
-
+                        <% if (event.rewards.length > 0) { %>
+                            <% event.rewards.forEach(reward => { %>
+                                <p><%= reward %></p>
+                            <% }) %>
                         <% } else { %>
                             <p>Nagrade će biti dodate kasnije!</p>
                         <% } %>
                     </div>
-                    <div>
+                    <div id="teams__container" class="teams__container tab-content <%= activeTeams %>" data-tab="teams__container">
                         <h3>Timovi</h3>
-                        <% if (event.rewards.lentgh > 0) { %>
-
+                        <% if (event.status === 'future' && teams.length > 0) { %>
+                            <div>
+                                <form action="/admin/dodajte-tim-u-dogadjaj" method="post">
+                                    <div>
+                                        <label for="teamId">Izaberite tim</label>
+                                        <select class="main-form__select" name="teamId" id="teamId">
+                                            <% teams.forEach(team => { %>
+                                                <option value="<%= team._id %>"><%= team.name %></option>
+                                            <% }) %>
+                                        </select>
+                                        <input type="hidden" name="eventId" value="<%= event._id %>">
+                                        <input type="hidden" name="CSRFToken" value="<%= csrfToken %>">
+                                        <button class="btn" type="submit">Unesite</button>
+                                    </div>
+                                </form>
+                            </div>
+                        <% } %>
+                        <% if (event.teams.length > 0) { %>
+                            <%- include("../team/team-table",
+                                {
+                                    teams: event.teams,
+                                    totalPoints: totalPoints,
+                                    isLeaderboard: false,
+                                    hasActions: true,
+                                    actions: [
+                                        {
+                                            type: 'link',
+                                            link: "/admin/tim-detalji/",
+                                            linkName: 'Vidite'
+                                        }
+                                    ]
+                                }) %>
                         <% } else { %>
                             <p>Timovi će biti dodati kasnije!</p>
                         <% } %>
                     </div>
                     <% if (event.status === "finished") { %>
-                        <div>
+                        <div id="leaderboards__container" class="leaderboards__container tab-content <%= activeLeaderboards %>" data-tab="leaderboards__container">
                             <h3>Rang Lista</h3>
-                            <% if (event.leaderboard.lentgh > 0) { %>
-
+                            <% if (event.leaderboard.length > 0) { %>
+                                <%- include("../team/team-table", {teams: event.leaderboard, totalPoints: totalPoints, isLeaderboard: true, hasActions: false}) %>
                             <% } else { %>
                                 <form action="" method="post">
-                                    <button type="">Rangirajte</button>
+                                    <button class="btn" type="">Rangirajte</button>
                                 </form>
                             <% } %>
                         </div>
-                        <div>
+                        <div id="quests__container" class="quests__container tab-content <%= activeQuests %>" data-tab="quests__container">
                             <h3>Pitanja</h3>
-                            <% if (event.quests.lentgh > 0) { %>
-                                <%- include("../question/quest-table"), {quests: event.quests} %>
-                                <p>radi</p>
+                            <% if (event.quests.length > 0) { %>
+                                <%- include("../question/quest-table", {quests: event.quests}) %>
                             <% } else { %>
                                 <p>Pitanja će biti dodata kasnije!</p>
                             <% } %>

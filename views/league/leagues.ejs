@@ -1,15 +1,12 @@
 <%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/table.css">
 <%- include('../includes/navigation.ejs') %>
     <section class="main__container">
-        <h2>Lige</h2>
-        <div>
-            <% if (leagues.length > 0) { %>
-                <% leagues.forEach(league => { %>
-                    <p><%= JSON.stringify(league) %></p>
-                <% }) %>
-            <% } else { %>
-                <p>Trenutno nema Liga!</p>
-            <% } %>
-        </div>
+        <div class="main__content padding-large">
+            <%- include("../league/league-table",
+            {
+                leagues: leagues
+            }) %>
+        </div> 
     </section>
 <%- include('../includes/end.ejs') %>
