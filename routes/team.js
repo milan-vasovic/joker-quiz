@@ -37,4 +37,5 @@ router.post("/admin/izbrisite-tim",
     [],
     isAuth, isAdmin, teamController.postDeleteTeam);
 
+router.post("/prijavite-vas-tim", teamController.postAddTeamToEvent);
 module.exports = router;

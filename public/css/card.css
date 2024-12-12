@@ -1,0 +1,114 @@
+:root {
+    --primary-color: #ce1818;
+    --card-shadow: rgba(150, 0, 5, 0.2);
+    --font-size-extra-small: 0.8rem;
+    --font-size-small: 1rem;
+    --font-size-base: 1.2rem;
+    --font-size-large: 2.4rem;
+    --font-size-extra-large: 3.2rem;
+    --font-weight-bold: bold;
+    --border-radius-small: 5px;
+    --border-radius-medium: 10px;
+    --border-radius-large: 12px;
+    --badge-width: 75px;
+    --badge-height: 25px;
+    --badge-padding: 5px 10px;
+}
+
+/* Kontejner za kartice */
+.cards__container {
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+}
+
+/* Pojedinačna kartica */
+.card__container {
+    min-width: 350px;
+    max-width: 350px;
+    max-height: 600px;
+    padding: 0.5rem;
+    border-radius: var(--border-radius-medium);
+    box-shadow: 0 0.2rem 0.4rem var(--card-shadow);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-content: space-between;
+}
+
+/* Zaglavlje kartice */
+.card__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Autor kartice */
+.author__box {
+    width: 100%;
+    display: flex;
+}
+
+.author__box.advance {
+    justify-content: space-between;
+}
+
+.author-box__link {
+    display: flex;
+    justify-content: space-between;
+}
+
+.author-box__image {
+    max-width: 30px;
+    max-height: 30px;
+}
+
+/* Naslov kartice */
+.card__title {
+    width: 100%;
+    text-align: center;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-bold);
+}
+
+/* Slika kartice */
+.card__image {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    max-height: 300px;
+    border-radius: var(--border-radius-medium);
+    cursor: pointer;
+}
+
+/* Kategorije kartice */
+.card__categories {
+    margin-top: 0.2rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    font-size: var(--font-size-small);
+    gap: 0.5rem;
+}
+
+/* Vreme kartice */
+.card__time {
+    font-size: var(--font-size-base);
+}
+
+/* Akcije na kartici */
+.card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Opis */
+.description {
+    text-align: left;
+    font-size: var(--font-size-base);
+}

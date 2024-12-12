@@ -8,6 +8,7 @@ const session = require("express-session");
 const MongoDbStore = require("connect-mongodb-session")(session);
 const { csrfSync } = require("csrf-sync");
 const compression = require("compression");
+const User = require('./models/user');
 
 const mongoose = require("mongoose");
 const MONGODB_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@quizapp.gmzsr.mongodb.net/${process.env.MONGO_DEFAULT_DB}`;
@@ -71,6 +72,27 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use((req, res, next) => {
+  if (!req.session.user) {
+    req.session.guest = true;
+    return next();
+  }
+  User.findById(req.session.user._id)
+    .select("-password")
+    .then((user) => {
+      if (!user) {
+        req.session.guest = true;
+        return next();
+      }
+      req.session.guest = false;
+      req.session.user = user;
+      next();
+    })
+    .catch((err) => {
+      next(new Error(err));
+    });
+});
+
 app.use(defaultRoutes);
 app.use(authRoutes);
 app.use(eventRoutes);
@@ -82,7 +104,6 @@ app.use(errorRoutes);
 
 app.use((error, req, res, next) => {
   const httpStatusCode = error.httpStatusCode ? error.httpStatusCode : 500;
-
   res.status(httpStatusCode).render("error/500error", {
     pageTitle: "Error!",
     path: "/500",

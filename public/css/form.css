@@ -24,6 +24,7 @@
     cursor: pointer;
 }
 
+.main-form__datetime,
 .main-form__input,
 .main-form__textarea,
 .main-form__select {
@@ -43,6 +44,7 @@
     padding: 5px;
 }
 
+.main-form__datetime:focus,
 .main-form__input:focus,
 .main-form__textarea:focus,
 .main-form__select:focus,

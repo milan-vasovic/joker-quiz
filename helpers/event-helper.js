@@ -10,7 +10,7 @@ exports.getEvents = async () => {
 };
 
 exports.getEventById = async (id) => {
-    const event = await EventModel.findById(id).populate("teams.teamId leaderboard.teamId", "_id name").populate("quests", "description category difficulty type acceptedAnswers");
+    const event = await EventModel.findById(id).select("-__v").populate("teams.teamId leaderboard.teamId", "_id name").populate("quests", "description category difficulty type acceptedAnswers");
     if (!event) {
         errorHelper.throwNotFoundError("događaja");
     }
@@ -41,6 +41,14 @@ exports.postNewEvent = async (body, user) => {
 
     const status = startDate > currentDate ? 'future' : 'current';
 
+    const newRewardName = Array.isArray(body["rewards"]) ? body["rewards"] : body["rewards"] ? [body["rewards"]] : [];
+    const newRewardImage = Array.isArray(body["images"]) ? body["images"] : body["images"] ? [body["images"]] : [];
+
+    const rewards = newRewardName.map((reward, index) => ({
+        reward: reward,
+        image: newRewardImage[index],
+    }));
+
     const newEvent = new EventModel({
         name: body.name,
         category: body.category,
@@ -53,7 +61,7 @@ exports.postNewEvent = async (body, user) => {
         },
         quests: [],
         teams: [],
-        rewards: [],
+        rewards: rewards,
         leaderboard: []
     });
     return await newEvent.save();

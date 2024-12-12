@@ -1,25 +1,54 @@
 <%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/card.css">
+<link rel="stylesheet" href="/css/tabs.css">
 <%- include('../includes/navigation.ejs') %>
 <section class="main__container">
     <h1><%= pageTitle %></h1>
-    <div>
-        <% if (events.length > 0) { %>
-            <% events.forEach(event => { %>
-                <p><%= event %></p>
-            <% }) %>
-        <% } else { %>
-            <p>There are no events yet!</p>
-        <% } %>
-    </div>
-    
-    <div>
-        <% if (leagues.length > 0) { %>
-            <% leagues.forEach(league => { %>
-                <p><%= league %></p>
-            <% }) %>
-        <% } else { %>
-            <p>There are no leagues yet!</p>
-        <% } %>
+    <div class="main__content">
+        <div>
+            <div class="tab__container">
+                <div class="tabs">
+                    <button type="button" class="tab <%= activeEvents %> btn" onclick="openTab('events__container')"
+                        data-tab="events__container">Nagrade</button>
+                    <button type="button" class="tab <%= activeLeagues %> btn" onclick="openTab('leagues__container')"
+                        data-tab="leagues__container">Lige</button>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div id="events__container" class="events__container tab-content <%= activeEvents %>" data-tab="events__container">
+                <h3>Događaji</h3>
+                <% if (events.length > 0) { %>
+                    <% events.forEach(event => { %>
+                        <div class="card__container">
+                            <div class="card__header">
+                                <h3 class="card__title"><%= event.name %></h3>
+                            </div>
+                            <div class="card__content">
+                                <h4>Vodi: <%= event.presenter.username %></h4>
+                                <p>Datum: <strong><%= event.startDate.toLocaleDateString('sr-RS') %></strong></p>
+                                <p>Kategorije: <%= event.category.join(", ") %></p>
+                            </div>
+                            <div class="card__actions">
+                                <a href="/dogadjaj-detalji/<%= event._id %>" class="main__link btn">Vidi</a>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <p>There are no events yet!</p>
+                <% } %>
+            </div>
+            <div id="leagues__container" class="leagues__container tab-content <%= activeLeagues %>" data-tab="leagues__container">
+                <h3>Lige</h3>
+                <% if (leagues.length > 0) { %>
+                    <% leagues.forEach(league => { %>
+                        <p><%= league %></p>
+                    <% }) %>
+                <% } else { %>
+                    <p>There are no leagues yet!</p>
+                <% } %>
+            </div>
+        </div>
     </div>
 </section>
 <%- include('../includes/end.ejs') %>

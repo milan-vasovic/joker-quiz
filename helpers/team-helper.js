@@ -35,7 +35,8 @@ exports.postDeleteteam = async (id) => {
 exports.postAddTeamToEvent = async (teamId, eventId) => {
     const event = await eventHelper.getEventById(eventId);
 
-    event.teams.push(teamId);
-    await event.save();
-    return true;
+    event.teams.push({
+        teamId: teamId
+    });
+    return await event.save();
 };

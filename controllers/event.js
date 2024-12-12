@@ -22,13 +22,18 @@ exports.getEventDetailsPage = async (req, res, next) => {
     try {
         let activeRewards, activeTeams, activeLeaderboards, activeQuests;
         
-        activeRewards = req.query.rewards ? "active" : undefined;
-        activeTeams = req.query.teams ? req.query.teams : undefined;
-        activeLeaderboards = req.query.leaderboard ? req.query.leaderboard : undefined;
-        activeQuests = req.query.quests ? req.query.quests : undefined;
-
+        if (Object.keys(req.query).length === 0) {
+            activeRewards = "active";
+        } else {
+            activeRewards = undefined;
+            activeTeams = req.query.teams ? req.query.teams : undefined;
+            activeLeaderboards = req.query.leaderboard ? req.query.leaderboard : undefined;
+            activeQuests = req.query.quests ? req.query.quests : undefined;
+        }
+        
         const eventId = req.params.eventId;
-
+        const loggedUser = req.session.user && req.session.user.username ? req.session.user._id : undefined;
+        const loggedTeam = req.session.user && req.session.user.name ? {name : req.session.user.name, _id: req.session.user._id} : undefined
         const event = await eventHelper.getEventById(eventId);
 
         const teams = await eventHelper.getNewTeamsForEvent(eventId);
@@ -41,10 +46,11 @@ exports.getEventDetailsPage = async (req, res, next) => {
             })
         });
 
-        console.log(JSON.stringify(event.teams));
         res.render("event/event-details", {
             pageTitle: "Događaj Detalji",
             path: '/dogadjaj-detalji',
+            loggedUser,
+            loggedTeam,
             event: event,
             teams: teams,
             totalPoints: totalPoints,

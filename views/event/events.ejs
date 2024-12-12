@@ -5,9 +5,7 @@
         <h2><%= pageTitle %></h2>
         <div>
             <% if (events.length > 0) { %>
-                <% events.forEach(event => { %>
-                    <%- include("./event-table"), {events: events} %>
-                <% }) %>
+                <%- include("./event-table"), {events: events} %>
             <% } else { %>
                 <p>Trenutno nema Događaja!</p>
             <% } %>

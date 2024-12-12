@@ -45,7 +45,7 @@ const eventSchema = new Schema({
     presenter: {
         presenterId: {
             type: Schema.Types.ObjectId,
-            requried: true,
+            required: true,
             ref: "User"
         },
 
@@ -62,7 +62,8 @@ const eventSchema = new Schema({
         },
 
         image: {
-            type: String
+            type: String,
+            default: ""
         }
     }],
 
